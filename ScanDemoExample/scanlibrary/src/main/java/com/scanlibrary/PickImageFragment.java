@@ -13,16 +13,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.scanlibrary.camera.CameraActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -126,21 +130,24 @@ public class PickImageFragment extends Fragment {
     public void openCamera() {
         camorgal = 0;
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = createImageFile();
-            boolean isDirectoryCreated = file.getParentFile().mkdirs();
-            Log.d("", "openCamera: isDirectoryCreated: " + isDirectoryCreated);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String aut =   "com.scanlibrary.provider"; // As defined in Manifest
-                Uri tempFileUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
-                        aut, // As defined in Manifest
-                        file);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
-            } else {
-                Uri tempFileUri = Uri.fromFile(file);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
-            }
-            startActivityForResult(cameraIntent, ScanConstants.START_CAMERA_REQUEST_CODE);
+//            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//            File file = createImageFile();
+//            boolean isDirectoryCreated = file.getParentFile().mkdirs();
+//            Log.d("", "openCamera: isDirectoryCreated: " + isDirectoryCreated);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            String aut =   "com.scanlibrary.provider"; // As defined in Manifest
+//                Uri tempFileUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
+//                        aut, // As defined in Manifest
+//                        file);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
+//            } else {
+//                Uri tempFileUri = Uri.fromFile(file);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
+//            }
+//            startActivityForResult(cameraIntent, ScanConstants.START_CAMERA_REQUEST_CODE);
+            camorgal = 2;
+            Intent i = new Intent(getActivity(), CameraActivity.class);
+            startActivityForResult(i, ScanConstants.START_IN_APP_CAMERA_REQUEST_CODE);
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
         }
@@ -156,6 +163,17 @@ public class PickImageFragment extends Fragment {
         return file;
     }
 
+    private Bitmap getBitmapFromCamera(Uri uri) {
+        try {
+            Bitmap original = Utils.getBitmap(getActivity(), uri);
+            getActivity().getContentResolver().delete(uri, null, null);
+            return original;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("", "onActivityResult" + resultCode);
@@ -163,6 +181,9 @@ public class PickImageFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             try {
                 switch (requestCode) {
+                    case ScanConstants.START_IN_APP_CAMERA_REQUEST_CODE:
+                        bitmap = getBitmapFromCamera(Uri.parse(data.getStringExtra("imageUri")));
+                        break;
                     case ScanConstants.START_CAMERA_REQUEST_CODE:
                         bitmap = getBitmap(fileUri);
                         break;
@@ -178,44 +199,39 @@ public class PickImageFragment extends Fragment {
             getActivity().finish();
         }
         if (bitmap != null) {
-            
-            if ( camorgal == 0 )
-            {
-            //PickImageFragment.this.getActivity().getContentResolver().notifyChange(fileUri, null);
-            File imageFile = new File(fileUri.getPath());
-            ExifInterface exif = null;
-            
-            try
-            {
-                exif = new ExifInterface(imageFile.getAbsolutePath());
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            
-            int orientation = 0;
-            if (exif != null)
-            {
-                orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            }
-            
-            int rotate = 0;
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
-            }
 
-            android.graphics.Matrix matrix = new android.graphics.Matrix();
-            matrix.postRotate(rotate);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            if (camorgal == 0) {
+                //PickImageFragment.this.getActivity().getContentResolver().notifyChange(fileUri, null);
+                File imageFile = new File(fileUri.getPath());
+                ExifInterface exif = null;
+
+                try {
+                    exif = new ExifInterface(imageFile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                int orientation = 0;
+                if (exif != null) {
+                    orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                }
+
+                int rotate = 0;
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotate = 270;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotate = 180;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotate = 90;
+                        break;
+                }
+
+                android.graphics.Matrix matrix = new android.graphics.Matrix();
+                matrix.postRotate(rotate);
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             }
             postImagePick(bitmap);
         }
