@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.ComponentCallbacks2;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -33,7 +34,7 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan_layout);
-        if(getActionBar() != null){
+        if (getActionBar() != null) {
             getActionBar().hide();
         }
         checkPermissions();
@@ -96,15 +97,34 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
 
     @Override
     public void onScanFinish(Uri uri) {
-        ResultFragment fragment = new ResultFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ScanConstants.SCANNED_RESULT, uri);
-        fragment.setArguments(bundle);
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.content, fragment);
-        fragmentTransaction.addToBackStack(ResultFragment.class.toString());
-        fragmentTransaction.commit();
+//        ResultFragment fragment = new ResultFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable(ScanConstants.SCANNED_RESULT, uri);
+//        fragment.setArguments(bundle);
+//        android.app.FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.content, fragment);
+//        fragmentTransaction.addToBackStack(ResultFragment.class.toString());
+//        fragmentTransaction.commit();
+        try {
+            Intent data = new Intent();
+            data.putExtra(ScanConstants.SCANNED_RESULT, uri);
+            setResult(Activity.RESULT_OK, data);
+            System.gc();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     @Override
