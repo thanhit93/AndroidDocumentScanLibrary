@@ -243,7 +243,7 @@ public class Camera2Fragment extends Fragment implements
     //widgets
     private RelativeLayout mStillshotContainer, mFlashContainer, mSwitchOrientationContainer,
             mCaptureBtnContainer, mCloseStillshotContainer, mPenContainer, mUndoContainer, mColorPickerContainer,
-            mSaveContainer, mStickerContainer, mTrashContainer;
+            mSaveContainer, mTrashContainer;//mStickerContainer
     private DrawableImageView mStillshotImageView;
     private ImageButton mTrashIcon, mFlashIcon;
     private VerticalSlideColorPicker mVerticalSlideColorPicker;
@@ -268,13 +268,13 @@ public class Camera2Fragment extends Fragment implements
         view.findViewById(R.id.switch_orientation).setOnClickListener(this);
         view.findViewById(R.id.init_draw_icon).setOnClickListener(this);
         view.findViewById(R.id.save_stillshot).setOnClickListener(this);
-        view.findViewById(R.id.init_sticker_icon).setOnClickListener(this);
+        // view.findViewById(R.id.init_sticker_icon).setOnClickListener(this);
 
         mTrashContainer = view.findViewById(R.id.trash_container);
         mTrashIcon = view.findViewById(R.id.trash);
         mFlashIcon = view.findViewById(R.id.flash_toggle);
         mFlashContainer = view.findViewById(R.id.flash_container);
-        mStickerContainer = view.findViewById(R.id.sticker_container);
+        //mStickerContainer = view.findViewById(R.id.sticker_container);
         mSaveContainer = view.findViewById(R.id.save_container);
         mVerticalSlideColorPicker = view.findViewById(R.id.color_picker);
         mUndoContainer = view.findViewById(R.id.undo_container);
@@ -400,7 +400,7 @@ public class Camera2Fragment extends Fragment implements
             mPenContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
             mSaveContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
             mCloseStillshotContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
-            mStickerContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
+            // mStickerContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
 
             // show the trash can container
             mTrashContainer.setVisibility(View.VISIBLE);
@@ -414,7 +414,7 @@ public class Camera2Fragment extends Fragment implements
             mPenContainer.animate().alpha(1.0f).setDuration(0);
             mSaveContainer.animate().alpha(1.0f).setDuration(0);
             mCloseStillshotContainer.animate().alpha(1.0f).setDuration(0);
-            mStickerContainer.animate().alpha(1.0f).setDuration(0);
+            // mStickerContainer.animate().alpha(1.0f).setDuration(0);
 
 
             // hide the trash can container
@@ -478,14 +478,14 @@ public class Camera2Fragment extends Fragment implements
         if (mColorPickerContainer.getVisibility() == View.VISIBLE) {
             mColorPickerContainer.setVisibility(View.INVISIBLE);
             mUndoContainer.setVisibility(View.INVISIBLE);
-            mStickerContainer.setVisibility(View.VISIBLE);
+            // mStickerContainer.setVisibility(View.VISIBLE);
             mTrashContainer.setVisibility(View.INVISIBLE);
 
             mIsDrawingEnabled = false;
         } else if (mColorPickerContainer.getVisibility() == View.INVISIBLE) {
             mColorPickerContainer.setVisibility(View.VISIBLE);
             mUndoContainer.setVisibility(View.VISIBLE);
-            mStickerContainer.setVisibility(View.INVISIBLE);
+            // mStickerContainer.setVisibility(View.INVISIBLE);
             mTrashContainer.setVisibility(View.INVISIBLE);
 
             if (mStillshotImageView.getBrushColor() == 0) {
@@ -510,7 +510,7 @@ public class Camera2Fragment extends Fragment implements
             mSaveContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
             mPenContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
             mCloseStillshotContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
-            mStickerContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
+            // mStickerContainer.animate().alpha(0.0f).setDuration(ICON_FADE_DURATION);
 
             mIsCurrentlyDrawing = true;
         }
@@ -524,7 +524,7 @@ public class Camera2Fragment extends Fragment implements
             mPenContainer.animate().alpha(1.0f).setDuration(0);
             mSaveContainer.animate().alpha(1.0f).setDuration(0);
             mCloseStillshotContainer.animate().alpha(1.0f).setDuration(0);
-            mStickerContainer.animate().alpha(1.0f).setDuration(0);
+            // mStickerContainer.animate().alpha(1.0f).setDuration(0);
 
             mIsCurrentlyDrawing = false;
         }
@@ -704,7 +704,7 @@ public class Camera2Fragment extends Fragment implements
         mUndoContainer.setVisibility(View.INVISIBLE);
         mStillshotContainer.setVisibility(View.INVISIBLE);
         mPenContainer.setVisibility(View.VISIBLE);
-        mStickerContainer.setVisibility(View.VISIBLE);
+        // mStickerContainer.setVisibility(View.VISIBLE);
 
         mFlashContainer.setVisibility(View.VISIBLE);
         mSwitchOrientationContainer.setVisibility(View.VISIBLE);
