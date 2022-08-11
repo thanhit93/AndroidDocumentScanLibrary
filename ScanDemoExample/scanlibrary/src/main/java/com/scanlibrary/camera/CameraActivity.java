@@ -283,6 +283,13 @@ public class CameraActivity extends AppCompatActivity implements IMainActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        setResult(RESULT_CANCELED, i);
+        super.onBackPressed();
+    }
+
     public void dragStickerStarted(){
         Camera2Fragment camera2Fragment = (Camera2Fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_camera2));
         if (camera2Fragment != null) {
