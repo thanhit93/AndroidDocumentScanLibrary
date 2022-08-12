@@ -464,9 +464,15 @@ public class Camera2Fragment extends Fragment implements
     }
 
     protected void postImagePick(Bitmap bitmap) {
-        Uri uri = Utils.getUri(getActivity(), bitmap);
-//        bitmap.recycle();
-        mIMainActivity.saveImage(uri);
+        final Uri uri = Utils.getUri(getActivity(), bitmap);
+        bitmap.recycle();
+        System.gc();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mIMainActivity.saveImage(uri);
+            }
+        });
     }
 
     @Override
@@ -1380,8 +1386,8 @@ public class Camera2Fragment extends Fragment implements
                     mIMainActivity.setBackCameraId(cameraId);
                 }
             }
-            mIMainActivity.setCameraFrontFacing();
-            mCameraId = mIMainActivity.getFrontCameraId();
+            mIMainActivity.setCameraBackFacing();
+            mCameraId = mIMainActivity.getBackCameraId();
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
