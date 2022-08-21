@@ -128,29 +128,36 @@ public class PickImageFragment extends Fragment {
     }
 
     public void openCamera() {
-        camorgal = 0;
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//            File file = createImageFile();
-//            boolean isDirectoryCreated = file.getParentFile().mkdirs();
-//            Log.d("", "openCamera: isDirectoryCreated: " + isDirectoryCreated);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            String aut =   "com.scanlibrary.provider"; // As defined in Manifest
-//                Uri tempFileUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
-//                        aut, // As defined in Manifest
-//                        file);
-//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
-//            } else {
-//                Uri tempFileUri = Uri.fromFile(file);
-//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
-//            }
-//            startActivityForResult(cameraIntent, ScanConstants.START_CAMERA_REQUEST_CODE);
-            camorgal = 2;
-            Intent i = new Intent(getActivity(), CameraActivity.class);
-            startActivityForResult(i, ScanConstants.START_IN_APP_CAMERA_REQUEST_CODE);
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-        }
+        System.gc();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                camorgal = 0;
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    File file = createImageFile();
+                    boolean isDirectoryCreated = file.getParentFile().mkdirs();
+                    Log.d("", "openCamera: isDirectoryCreated: " + isDirectoryCreated);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        String aut = "com.scanlibrary.provider"; // As defined in Manifest
+                        Uri tempFileUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
+                                aut, // As defined in Manifest
+                                file);
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
+                    } else {
+                        Uri tempFileUri = Uri.fromFile(file);
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
+                    }
+                    startActivityForResult(cameraIntent, ScanConstants.START_CAMERA_REQUEST_CODE);
+                    //todo: Custom camera
+    //            camorgal = 2;
+    //            Intent i = new Intent(getActivity(), CameraActivity.class);
+    //            startActivityForResult(i, ScanConstants.START_IN_APP_CAMERA_REQUEST_CODE);
+                } else {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                }
+            }
+        });
     }
 
     private File createImageFile() {

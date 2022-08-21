@@ -7,16 +7,23 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.droidninja.imageeditengine.ImageEditor;
+import com.scanlibrary.RealPathUtils;
 import com.scanlibrary.ScanActivity;
 import com.scanlibrary.ScanConstants;
+import com.scanlibrary.Utils;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -73,14 +80,26 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getExtras().getParcelable(ScanConstants.SCANNED_RESULT);
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                getContentResolver().delete(uri, null, null);
-                scannedImageView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String filePath = RealPathUtils.getPath(this, uri);
+            new ImageEditor.Builder(this, filePath)
+                    .open();
+        }
+        if (requestCode == ImageEditor.RC_IMAGE_EDITOR && resultCode == Activity.RESULT_OK && data != null) {
+            String imagePath = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH);
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            scannedImageView.setImageBitmap(bitmap);
+            final Uri uri = Utils.getUri(this, bitmap);
+//            Uri uri = Uri.fromFile(new File(imagePath));
+            Log.e("URI", uri.toString());
+//            Bitmap bitmap = null;
+//            try {
+//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+//                getContentResolver().delete(uri, null, null);
+//                scannedImageView.setImageBitmap(bitmap);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
         }
     }
 
