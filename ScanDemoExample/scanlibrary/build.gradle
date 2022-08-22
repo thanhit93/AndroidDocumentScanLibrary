@@ -5,22 +5,21 @@ android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
     ndkVersion "21.1.6352462"
-    
+
     // Needed for jitpack builds
-    packagingOptions {
-        doNotStrip '*/mips/*.so'
-        doNotStrip '*/mips64/*.so'
-    }
+//    packagingOptions {
+//        doNotStrip '*/mips/*.so'
+//        doNotStrip '*/mips64/*.so'
+//    }
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        ndk
-                {
-                    moduleName "Scanner"
-                }
+        ndk {
+           moduleName "Scanner"
+        }
     }
     sourceSets.main
             {
@@ -33,7 +32,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    
+
 }
 
 dependencies {
