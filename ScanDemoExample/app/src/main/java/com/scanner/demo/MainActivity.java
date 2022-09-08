@@ -26,10 +26,14 @@ import com.scanlibrary.Utils;
 import java.io.File;
 import java.io.IOException;
 
+import devliving.online.cvscanner.CVScanner;
+import devliving.online.cvscanner.util.Util;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 99;
+    final int REQ_SCAN = 11;
     private Button scanButton;
     private Button cameraButton;
     private Button mediaButton;
@@ -70,9 +74,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void startScan(int preference) {
-        Intent intent = new Intent(this, ScanActivity.class);
-        intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, preference);
-        startActivityForResult(intent, REQUEST_CODE);
+//        Intent intent = new Intent(this, ScanActivity.class);
+//        intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, preference);
+//        startActivityForResult(intent, REQUEST_CODE);
+        startScannerIntent(false);
+    }
+
+    void startScannerIntent(boolean isPassport) {
+        CVScanner.startScanner(this, isPassport, REQ_SCAN);
     }
 
     @Override
@@ -100,6 +109,23 @@ public class MainActivity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
 
+        }
+
+        if(resultCode == RESULT_OK){
+            switch (requestCode) {
+                case REQ_SCAN:
+                    Log.d("MAIN", "got intent data");
+                    if(data != null && data.getExtras() != null){
+                        String path = data.getStringExtra(CVScanner.RESULT_IMAGE_PATH);
+                        File file = new File(path);
+                        Uri imageUri = Util.getUriForFile(this, file);
+                        Log.d("MAIN", "added: " + imageUri);
+                        CVScanner.startManualCropper(this, imageUri, 300);
+//                        new ImageEditor.Builder(this, path)
+//                                .open();
+                    }
+                    break;
+            }
         }
     }
 
