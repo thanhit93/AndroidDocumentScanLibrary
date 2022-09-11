@@ -1,0 +1,4 @@
+<resources>
+    <string name="label_move_camera">Déplacez la caméra vers les documents d\'identité/passeports à numériser</string>
+    <string name="label_move_camera_note">Déplacez l\'appareil photo jusqu\'à ce que le téléphone le reconnaisse</string>
+</resources>

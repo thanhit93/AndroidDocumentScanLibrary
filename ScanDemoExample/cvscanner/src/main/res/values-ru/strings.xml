@@ -1,0 +1,4 @@
+<resources>
+    <string name="label_move_camera">Переместите камеру на документы, удостоверяющие личность / паспорта для сканирования</string>
+    <string name="label_move_camera_note">Перемещайте камеру, пока телефон не распознает ее</string>
+</resources>

@@ -1,4 +1,3 @@
 <resources>
-
-  <!-- TODO: Remove or change this placeholder text -->
+    <string name="label_filters">Swipe up to filters</string>
 </resources>

@@ -276,7 +276,11 @@ public class DocumentScannerFragment extends BaseFragment implements View.OnTouc
     public void onDestroy() {
         super.onDestroy();
         if (mPreview != null) {
-            mPreview.release();
+            try {
+                mPreview.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         if(sound != null) sound.release();

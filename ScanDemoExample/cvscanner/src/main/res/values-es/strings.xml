@@ -1,0 +1,4 @@
+<resources>
+    <string name="label_move_camera">Mover la cámara a documentos de identidad/pasaportes para escanear</string>
+    <string name="label_move_camera_note">Mueve la cámara hasta que el teléfono la reconozca</string>
+</resources>

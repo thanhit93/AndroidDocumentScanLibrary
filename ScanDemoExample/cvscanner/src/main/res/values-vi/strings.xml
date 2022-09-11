@@ -1,0 +1,4 @@
+<resources>
+    <string name="label_move_camera">Di chuyển máy ảnh đến Giấy tờ tùy thân / Hộ chiếu để quét</string>
+    <string name="label_move_camera_note">Di chuyển máy ảnh cho đến khi điện thoại nhận ra nó</string>
+</resources>

@@ -24,8 +24,7 @@
       android:id="@+id/photo_editor_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:visibility="visible"
-      />
+      android:visibility="visible" />
 
   <ImageView
       android:id="@+id/delete_view"
@@ -59,11 +58,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@+id/stickers_btn"
         android:layout_toStartOf="@+id/stickers_btn"
+        android:layout_toLeftOf="@+id/stickers_btn"
         android:padding="8dp"
-        android:src="@drawable/ic_cam_crop_rotate"
-        />
+        android:src="@drawable/ic_cam_crop_rotate" />
 
 
     <ImageView
@@ -128,7 +126,7 @@
       android:shadowDx="-1"
       android:shadowDy="-1"
       android:shadowRadius="1"
-      android:text="Filters"
+      android:text="@string/label_filters"
       android:textColor="@color/white"
       />
 

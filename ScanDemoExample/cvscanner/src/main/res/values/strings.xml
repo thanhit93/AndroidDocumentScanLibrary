@@ -3,4 +3,6 @@
     <string name="camera_permission_msg">Permission to access the camera is required.</string>
     <string name="storage_permission_msg">Permission to access sdcard is required to store images.</string>
     <string name="camera_busy">Camera is busy!</string>
+    <string name="label_move_camera">Move camera to ID documents/Passports to scan</string>
+    <string name="label_move_camera_note">Move the camera until the phone recognizes it</string>
 </resources>
