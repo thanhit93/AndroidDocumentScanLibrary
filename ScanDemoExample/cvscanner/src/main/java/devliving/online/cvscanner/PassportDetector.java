@@ -96,15 +96,23 @@ public class PassportDetector extends Detector<Document> {
         CVProcessor.Quadrilateral quad = null;
 
         if(isMRZBasedDetection){
-            List<MatOfPoint> contours = CVProcessor.findContoursForMRZ(src);
+            try {
+                List<MatOfPoint> contours = CVProcessor.findContoursForMRZ(src);
 
-            if(!contours.isEmpty()){
-                quad = CVProcessor.getQuadForPassport(contours, imageSize, frameSizeProvider != null? frameSizeProvider.frameWidth():0);
+                if(!contours.isEmpty()){
+                    quad = CVProcessor.getQuadForPassport(contours, imageSize, frameSizeProvider != null? frameSizeProvider.frameWidth():0);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         else{
-            quad = CVProcessor.getQuadForPassport(src, frameSizeProvider != null? frameSizeProvider.frameWidth():0,
-                    frameSizeProvider != null? frameSizeProvider.frameHeight():0);
+            try {
+                quad = CVProcessor.getQuadForPassport(src, frameSizeProvider != null? frameSizeProvider.frameWidth():0,
+                        frameSizeProvider != null? frameSizeProvider.frameHeight():0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         src.release();
