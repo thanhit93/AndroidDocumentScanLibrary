@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, ScanActivity.class);
 //        intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, preference);
 //        startActivityForResult(intent, REQUEST_CODE);
-        startScannerIntent(false);
+        startScannerIntent(true);
     }
 
     void startScannerIntent(boolean isPassport) {
