@@ -102,16 +102,14 @@ public class PassportDetector extends Detector<Document> {
                 if(!contours.isEmpty()){
                     quad = CVProcessor.getQuadForPassport(contours, imageSize, frameSizeProvider != null? frameSizeProvider.frameWidth():0);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
         else{
             try {
                 quad = CVProcessor.getQuadForPassport(src, frameSizeProvider != null? frameSizeProvider.frameWidth():0,
                         frameSizeProvider != null? frameSizeProvider.frameHeight():0);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
 
